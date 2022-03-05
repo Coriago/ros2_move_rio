@@ -1,21 +1,22 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSPresetProfiles
 
-from std_msgs.msg import String
+from std_msgs.msg import Float32
 
 
 class MinimalPublisher(Node):
 
     def __init__(self):
         super().__init__('minimal_publisher')
-        self.publisher_ = self.create_publisher(String, 'topic', 10)
+        self.publisher_ = self.create_publisher(Float32, 'joy_control2', QoSPresetProfiles.SENSOR_DATA)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
     def timer_callback(self):
-        msg = String()
-        msg.data = 'Hello World: %d' % self.i
+        msg = Float32()
+        msg.data = float(self.i)
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1

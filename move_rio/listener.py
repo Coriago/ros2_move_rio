@@ -1,25 +1,31 @@
 import rclpy
 from rclpy.node import Node
-
-from std_msgs.msg import String
+from rclpy import qos
+# from rclpy.duration import Duration
+from std_msgs.msg import Float32
 
 
 class MinimalSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
-        self.subscription = self.create_subscription(
-            String,
-            'topic',
-            self.listener_callback,
-            10)
+
+        qos_profile = qos.QoSProfile(
+            depth=1,
+            reliability=qos.ReliabilityPolicy.BEST_EFFORT,
+            durability=qos.DurabilityPolicy.VOLATILE,
+        )
+
+        self.subscription = self.create_subscription(Float32, 'joy_control', self.listener_callback,  qos_profile)
         self.subscription  # prevent unused variable warning
 
     def listener_callback(self, msg):
+        print('test')
         self.get_logger().info('I heard: "%s"' % msg.data)
 
 
 def main(args=None):
+    print('Starting..')
     rclpy.init(args=args)
 
     minimal_subscriber = MinimalSubscriber()

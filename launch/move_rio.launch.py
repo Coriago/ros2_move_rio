@@ -7,12 +7,10 @@ def generate_launch_description():
             package='move_rio',
             namespace='move_rio_ns',
             executable='talker',
-            name='talker_node'
         ),
-        Node(
-            package='move_rio',
-            namespace='move_rio_ns',
-            executable='listener',
-            name='listener_node'
-        )
+        # Node(
+        #     package='move_rio',
+        #     namespace='move_rio_ns',
+        #     executable='listener',
+        # )
     ])
